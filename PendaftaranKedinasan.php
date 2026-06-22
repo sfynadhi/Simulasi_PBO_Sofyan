@@ -1,41 +1,40 @@
 <?php
-// PendaftaranKedinasan.php
 require_once 'pendaftaran.php';
 
-class PendaftaranKedinasan extends Pendaftaran {
-    // Properti tambahan spesifik
+class PendaftaranKedinasan extends Pendaftaran
+{
     private $skIkatanDinas;
     private $instansiSponsor;
 
-    // Constructor menduduki constructor induk + properti tambahan
-    public function __construct($id_pendaftaran, $nama_calon, $asal_sekolah, $nilai_ujian, $biayaPendaftaranDasar, $skIkatanDinas, $instansiSponsor) {
-        parent::__construct($id_pendaftaran, $nama_calon, $asal_sekolah, $nilai_ujian, $biayaPendaftaranDasar);
-        $this->skIkatanDinas = $skIkatanDinas;
-        $this->instansiSponsor = $instansiSponsor;
+    public function __construct($data)
+    {
+        parent::__construct(
+            $data['id_pendaftaran'],
+            $data['nama_calon'],
+            $data['asal_sekolah'],
+            $data['nilai_ujian'],
+            $data['biaya_pendaftaran_dasar']
+        );
+
+        $this->skIkatanDinas = $data['sk_ikatan_dinas'];
+        $this->instansiSponsor = $data['instansi_sponsor'];
     }
 
-    // Implementasi metode abstrak dari kelas induk
-    public function hitungTotalBiaya() {
-        return $this->biayaPendaftaranDasar + 100000; // Contoh logika: Tambahan biaya perlengkapan/seragam fixed Rp 100.000
+    public static function getDaftarKedinasan($db)
+    {
+        return $db->query("
+            SELECT * FROM tabel_pendaftaran
+            WHERE jalur_pendaftaran='Kedinasan'
+        ");
     }
 
-    public function tampilkanInfoJalur() {
-        echo "Jalur Pendaftaran: Kedinasan<br>";
-        echo "SK Ikatan Dinas: " . $this->skIkatanDinas . "<br>";
-        echo "Instansi Sponsor: " . $this->instansiSponsor . "<br>";
-    }
-
-    // Metode Query Spesifik untuk Jalur Kedinasan
-    public static function getDaftarKedinasan($db) {
-        $query = "SELECT * FROM tabel_pendaftaran WHERE jalur_pendaftaran = 'Kedinasan'";
-        $stmt = $db->prepare($query);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-}
-// Overriding metode untuk Jalur Kedinasan
-    public function hitungTotalBiaya() {
-        // Total Biaya = biayaPendaftaranDasar * 1.25
+    public function hitungTotalBiaya()
+    {
         return $this->biayaPendaftaranDasar * 1.25;
     }
-?>
+
+    public function tampilkanInfoJalur()
+    {
+        return $this->instansiSponsor . " | " . $this->skIkatanDinas;
+    }
+}

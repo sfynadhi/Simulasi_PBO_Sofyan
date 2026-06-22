@@ -1,41 +1,40 @@
 <?php
-// PendaftaranReguler.php
 require_once 'pendaftaran.php';
 
-class PendaftaranReguler extends Pendaftaran {
-    // Properti tambahan spesifik
+class PendaftaranReguler extends Pendaftaran
+{
     private $pilihanProdi;
     private $lokasiKampus;
 
-    // Constructor menduduki constructor induk + properti tambahan
-    public function __construct($id_pendaftaran, $nama_calon, $asal_sekolah, $nilai_ujian, $biayaPendaftaranDasar, $pilihanProdi, $lokasiKampus) {
-        parent::__construct($id_pendaftaran, $nama_calon, $asal_sekolah, $nilai_ujian, $biayaPendaftaranDasar);
-        $this->pilihanProdi = $pilihanProdi;
-        $this->lokasiKampus = $lokasiKampus;
+    public function __construct($data)
+    {
+        parent::__construct(
+            $data['id_pendaftaran'],
+            $data['nama_calon'],
+            $data['asal_sekolah'],
+            $data['nilai_ujian'],
+            $data['biaya_pendaftaran_dasar']
+        );
+
+        $this->pilihanProdi = $data['pilihan_prodi'];
+        $this->lokasiKampus = $data['lokasi_kampus'];
     }
 
-    // Implementasi metode abstrak dari kelas induk
-    public function hitungTotalBiaya() {
-        return $this->biayaPendaftaranDasar; // Reguler menggunakan biaya normal
+    public static function getDaftarReguler($db)
+    {
+        return $db->query("
+            SELECT * FROM tabel_pendaftaran
+            WHERE jalur_pendaftaran='Reguler'
+        ");
     }
 
-    public function tampilkanInfoJalur() {
-        echo "Jalur Pendaftaran: Reguler<br>";
-        echo "Pilihan Prodi: " . $this->pilihanProdi . "<br>";
-        echo "Lokasi Kampus: " . $this->lokasiKampus . "<br>";
-    }
-
-    // Metode Query Spesifik untuk Jalur Reguler
-    public static function getDaftarReguler($db) {
-        $query = "SELECT * FROM tabel_pendaftaran WHERE jalur_pendaftaran = 'Reguler'";
-        $stmt = $db->prepare($query);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-}
-// Overriding metode untuk Jalur Reguler
-    public function hitungTotalBiaya() {
-        // Total Biaya = biayaPendaftaranDasar
+    public function hitungTotalBiaya()
+    {
         return $this->biayaPendaftaranDasar;
     }
-?>
+
+    public function tampilkanInfoJalur()
+    {
+        return $this->pilihanProdi . " | " . $this->lokasiKampus;
+    }
+}

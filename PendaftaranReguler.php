@@ -33,4 +33,9 @@ class PendaftaranReguler extends Pendaftaran {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
+// Overriding metode untuk Jalur Reguler
+    public function hitungTotalBiaya() {
+        // Total Biaya = biayaPendaftaranDasar
+        return $this->biayaPendaftaranDasar;
+    }
 ?>

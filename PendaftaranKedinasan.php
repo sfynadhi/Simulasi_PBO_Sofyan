@@ -33,4 +33,9 @@ class PendaftaranKedinasan extends Pendaftaran {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
+// Overriding metode untuk Jalur Kedinasan
+    public function hitungTotalBiaya() {
+        // Total Biaya = biayaPendaftaranDasar * 1.25
+        return $this->biayaPendaftaranDasar * 1.25;
+    }
 ?>

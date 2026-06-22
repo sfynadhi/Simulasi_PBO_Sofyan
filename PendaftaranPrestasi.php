@@ -33,4 +33,9 @@ class PendaftaranPrestasi extends Pendaftaran {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
+// Overriding metode untuk Jalur Prestasi
+    public function hitungTotalBiaya() {
+        // Total Biaya = biayaPendaftaranDasar - 50000
+        return $this->biayaPendaftaranDasar - 50000;
+    }
 ?>

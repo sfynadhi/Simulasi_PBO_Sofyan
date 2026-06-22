@@ -2,28 +2,24 @@
 // Pendaftaran.php
 
 abstract class Pendaftaran {
-    // Properti/Atribut Terenkapsulasi (protected)
+    // 3. Properti/Atribut Terenkapsulasi (protected)
     protected $id_pendaftaran;
     protected $nama_calon;
     protected $asal_sekolah;
     protected $nilai_ujian;
-    protected $biayaPendaftaranDasar; // Sesuai permintaan penamaan di soal
+    protected $biayaPendaftaranDasar; // Mapping dari biaya_pendaftaran_dasar
 
-    // Constructor untuk memetakan nilai dari kolom database
-    public function __construct($id_pendaftaran, $nama_calon, $asal_sekolah, $nilai_ujian, $biaya_pendaftaran_dasar) {
+    // Constructor untuk menginisialisasi data objek saat dipetakan dari database
+    public function __construct($id_pendaftaran, $nama_calon, $asal_sekolah, $nilai_ujian, $biayaPendaftaranDasar) {
         $this->id_pendaftaran = $id_pendaftaran;
         $this->nama_calon = $nama_calon;
         $this->asal_sekolah = $asal_sekolah;
         $this->nilai_ujian = $nilai_ujian;
-        // Memetakan kolom 'biaya_pendaftaran_dasar' dari DB ke properti '$biayaPendaftaranDasar'
-        $this->biayaPendaftaranDasar = $biaya_pendaftaran_dasar;
+        $this->biayaPendaftaranDasar = $biayaPendaftaranDasar;
     }
 
-    // (Opsional) Getter jika nanti datanya perlu ditampilkan di interface/tahap selanjutnya
-    public function getIdPendaftaran() { return $this->id_pendaftaran; }
-    public function getNamaCalon() { return $this->nama_calon; }
-    public function getAsalSekolah() { return $this->asal_sekolah; }
-    public function getNilaiUjian() { return $this->nilai_ujian; }
-    public function getBiayaPendaftaranDasar() { return $this->biayaPendaftaranDasar; }
+    // 4. Metode Abstrak (Tanpa Isi/Body)
+    abstract public function hitungTotalBiaya();
+    abstract public function tampilkanInfoJalur();
 }
 ?>
